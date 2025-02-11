@@ -1,7 +1,7 @@
 import os
-import time
-from core.ansi import color_cat, color_print as print
 import sys
+from core.ansi import color_cat, color_print as print
+from core.game import Game
 from core.utils import input_to
 
 from pymitter import EventEmitter
@@ -9,10 +9,6 @@ event = EventEmitter()
 
 path = "saves"
 saves_list = None
-
-
-class Game:
-	start_time = time.time()
 
 
 def initialize():
@@ -50,7 +46,7 @@ def new_game_or_load(param: str):
 
 
 def new_game():
-	game = Game()
+	Game()
 
 
 def load(param: str):
