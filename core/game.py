@@ -1,50 +1,61 @@
 import time
 
-from core.ansi import color_print as print
+from core.ansi import color_cat, color_print as print
 from core.character import Character
+from core.cmds import parse_cmds
+from core.object import Object
 from core.say import say
+from core.utils import input_to
+
 
 class Game:
-	def __init__(self):
-		self.start_time = time.time()
-		self.objects = {}
-		self.load()
-		self.李逍遥 = self.get_object("李逍遥")
-		self.start()
-	def get_object(self, name: str):
-		if name in self.objects:
-			return self.objects[name]
-	def load(self):
-		Character(self, name="李逍遥")
-		Character(self, name="李大娘")
-	def start(self):
-		李逍遥 = self.李逍遥
-		李大娘 = self.get_object("李大娘")
+    def __init__(self):
+        self.start_time = time.time()
+        self.objects = {}
+        self.load()
+        self.李逍遥 = self.get_object("李逍遥")
+        #self.start()
+        print("\n$green$欢迎您进入仙剑奇侠传，今后请使用 $brightyellow$帮助 $green$命令获得指令帮助。$normal$\n")
+        color_cat("./doc/topics")
+        while True:
+            input_to(parse_cmds)
 
-		print("\n$cyan$【余杭客栈·李逍遥房】$normal$\n")
-		say("李～逍～遥，李～逍～遥！")
-		李逍遥.say("哇哇！作恶多端的罗煞鬼婆！")
-		李逍遥.say("既然落在你的手里，要杀要剐不用多说！")
-		李大娘.say("李逍遥！你皮痒啊？敢说老娘是什么鬼婆！")
-		李逍遥.say("哎呦～疼啊！")
-		李大娘.say("又在作白日梦了！你也老大不小了，整天疯疯癫癫地，也不学学做正经事！")
-		李逍遥.say("婶婶～你不要每次叫人起床都拿锅呀、铲呀，乱敲一通的，会吓死人哪！")
-		李逍遥.say("咱们这木床又不牢靠，万一我给摔死了，咱们李家就绝后啦！")
-		李大娘.say("不这样叫得醒你吗？好歹你也跟林师傅学过几个月的木工，床不牢自己动手修一修不就好了？")
-		李大娘.say("就只会削些木刀木剑的，成天学你爹舞刀弄剑，没个定性，有哪家姑娘愿意嫁给你喔．．")
-		李逍遥.say("那我爹怎么会娶到我娘？")
-		李大娘.say("啧！你娘也是跟你爹一个样儿！嫁到咱们李家来，也不做针线女红，就只会跟着你爹疯．．")
-		李逍遥.say("嘿．．大家都说～他们是江湖上人人羡慕的鸳鸯侠侣呢！")
-		李大娘.say("是哦～侠侣？说要去行侠仗义，丢下你这惹祸精，一去无回。")
-		李大娘.say("还不是我这老太婆省吃俭用的开了这么一家小小的客栈，才把你拉拔到这么大，结果养出这么一个懒鬼！")
-		李逍遥.say("谁说我是懒鬼啦？")
-		李逍遥.say("我将来要像我爹娘一样练成绝世武功，纵横四海、称霸江湖的一代大侠！")
-		李大娘.say("少跟老娘鬼扯淡！")
-		李大娘.say("你呀～游手好闲是出了名的，要不是这回我忙不过来，才不指望你这懒鬼来帮忙呢！")
-		李逍遥.say("一大早就有客人上门啦？")
-		李大娘.say("是啊．．还不快过来帮忙！")
-		李逍遥.say("真没意思．．一大清早就要人家做这个又做那个的．．")
-		李逍遥.say("嘿．．昨晚做好的密道正好派上用场，这次就从这里溜出去吧．．")
-		李大娘.say("逍遥！还窝在房里干啥？快出来帮忙招呼客人！")
-		李逍遥.say("喔！．．我马上就去！")
-		李逍遥.say("啧～算了，晚上再用密道吧，现在被发现就惨了！")
+    def get_object(self, name: str) -> Object | None:
+        if name in self.objects:
+            return self.objects[name]
+
+    def load(self):
+        Character(self, name="李逍遥")
+        Character(self, name="李大娘")
+
+    def start(self):
+        李逍遥: Character = self.李逍遥
+        李大娘: Character = self.get_object("李大娘")
+
+        print("\n$cyan$【余杭客栈·李逍遥房】$normal$\n")
+        say("李～逍～遥，李～逍～遥！")
+        李逍遥.say("哇哇！作恶多端的罗煞鬼婆！")
+        李逍遥.say("既然落在你的手里，要杀要剐不用多说！")
+        李大娘.say("李逍遥！你皮痒啊？敢说老娘是什么鬼婆！")
+        李逍遥.say("哎呦～疼啊！")
+        李大娘.say("又在作白日梦了！你也老大不小了，整天疯疯癫癫地，也不学学做正经事！")
+        李逍遥.say("婶婶～你不要每次叫人起床都拿锅呀、铲呀，乱敲一通的，会吓死人哪！")
+        李逍遥.say("咱们这木床又不牢靠，万一我给摔死了，咱们李家就绝后啦！")
+        李大娘.say("不这样叫得醒你吗？好歹你也跟林师傅学过几个月的木工，床不牢自己动手修一修不就好了？")
+        李大娘.say("就只会削些木刀木剑的，成天学你爹舞刀弄剑，没个定性，有哪家姑娘愿意嫁给你喔．．")
+        李逍遥.say("那我爹怎么会娶到我娘？")
+        李大娘.say("啧！你娘也是跟你爹一个样儿！嫁到咱们李家来，也不做针线女红，就只会跟着你爹疯．．")
+        李逍遥.say("嘿．．大家都说～他们是江湖上人人羡慕的鸳鸯侠侣呢！")
+        李大娘.say("是哦～侠侣？说要去行侠仗义，丢下你这惹祸精，一去无回。")
+        李大娘.say("还不是我这老太婆省吃俭用的开了这么一家小小的客栈，才把你拉拔到这么大，结果养出这么一个懒鬼！")
+        李逍遥.say("谁说我是懒鬼啦？")
+        李逍遥.say("我将来要像我爹娘一样练成绝世武功，纵横四海、称霸江湖的一代大侠！")
+        李大娘.say("少跟老娘鬼扯淡！")
+        李大娘.say("你呀～游手好闲是出了名的，要不是这回我忙不过来，才不指望你这懒鬼来帮忙呢！")
+        李逍遥.say("一大早就有客人上门啦？")
+        李大娘.say("是啊．．还不快过来帮忙！")
+        李逍遥.say("真没意思．．一大清早就要人家做这个又做那个的．．")
+        李逍遥.say("嘿．．昨晚做好的密道正好派上用场，这次就从这里溜出去吧．．")
+        李大娘.say("逍遥！还窝在房里干啥？快出来帮忙招呼客人！")
+        李逍遥.say("喔！．．我马上就去！")
+        李逍遥.say("啧～算了，晚上再用密道吧，现在被发现就惨了！")
