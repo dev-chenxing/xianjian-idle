@@ -1,4 +1,4 @@
-from ansi import color_input as input, filter_color
+from .ansi import color_input as input, filter_color
 
 
 def input_to(callback: callable, *arg):

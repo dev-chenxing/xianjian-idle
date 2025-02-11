@@ -50,7 +50,7 @@ def color_print(content: str, slow: bool = False):
 
 
 def color_input(content: str):
-    return input(fg.cyan+content)
+    return input(fg.blue+content)
 
 
 def read_file(file: str):
