@@ -4,7 +4,7 @@ from core.say import press_any_key_to_continue
 
 class Character(Object):
 	def __init__(self, game, name:str):
-		super().__init__(game, name)
+		super().__init__(game, object_type="character", name=name)
 		self.经验值 = 0
 		self.修行 = 1
 		self.当前体力 = 150
@@ -16,7 +16,15 @@ class Character(Object):
 		self.防御 = 41
 		self.身法 = 31
 		self.吉运 = 32
-		
+		self.装备 = {
+			"头戴": None, 
+			"披挂": None, 
+			"身穿": None, 
+			"手持": None, 
+			"脚穿": None, 
+			"配带": None
+		}
+
 	def say(self, text:str):
 		print(fg.cyan+self.name+"："+reset+text)
 		press_any_key_to_continue()

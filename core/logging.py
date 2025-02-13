@@ -5,3 +5,6 @@ DEBUG = True
 def debug(text: str):
 	if DEBUG:
 		print("[DEBUG] "+text)
+
+def error(text: str):
+	print("$red$[ERROR] "+text)

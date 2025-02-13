@@ -12,9 +12,11 @@ for file in os.listdir(command_dir):
 	if path.is_file():
 		name = path.stem
 		cmd = importlib.import_module(command_dir+"."+name)
-		if cmd.name and cmd.callback:
-			log.debug("Found cmd file $yellow$"+name+" "+cmd.name)
-			cmd_patterns[cmd.name] = cmd.callback
+		if hasattr(cmd, "pattern") and hasattr(cmd, "callback"):
+			log.debug("Found cmd file $yellow$"+name+" "+cmd.pattern)
+			cmd_patterns[cmd.pattern] = cmd.callback
+		else:
+			log.error(f"Found invalid cmd file {name}")
 
 def parse_cmds(param: str):
 	log.debug("Parsing command: "+param)

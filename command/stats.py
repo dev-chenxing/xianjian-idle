@@ -1,7 +1,7 @@
 from core.ansi import color_print as print
 from core.common import MAX_NUMBER
 
-name = "状态"
+pattern = "状态"
 
 def callback():
 	from core.common import game

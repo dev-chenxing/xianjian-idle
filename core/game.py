@@ -1,12 +1,15 @@
+import importlib
+import os
+import pathlib
 import time
 
-from core import common
 from core.ansi import color_print as print
+from core.armor import Armor
 from core.character import Character
+import core.logging as log
 from core.object import Object
 from core.say import say
-
-
+from core.weapon import Weapon
 
 
 class Game:
@@ -14,13 +17,71 @@ class Game:
 		self.start_time = time.time()
 		self.objects = {}
 
+	def equip(self, character: Character, item):
+		if item.object_type == "armor":
+			if item.slot == "头":
+				character.装备["头戴"] = item
+			elif item.slot == "披":
+				character.装备["披挂"] = item
+			elif item.slot == "身":
+				character.装备["身穿"] = item
+			elif item.slot == "脚":
+				character.装备["脚穿"] = item
+			elif item.slot == "腕":
+				character.装备["配带"] = item
+		elif item.object_type == "weapon":
+			character.装备["手持"] = item
+
 	def get_object(self, name: str) -> Object | None:
 		if name in self.objects:
 			return self.objects[name]
 
 	def load(self):
-		self.李逍遥 = Character(self, name="李逍遥")
-		Character(self, name="李大娘")
+		self.load_items()
+		self.load_characters()
+
+	def load_characters(self):
+		data_dir = "data"
+		sub_dir = "character"
+		full_dir = os.path.join(data_dir, sub_dir)
+		log.debug(f"Loading {sub_dir}...")
+		for file in os.listdir(full_dir):
+			path = pathlib.Path(os.path.join(full_dir, file))
+			if path.is_file():
+				name = path.stem
+				module = importlib.import_module(f"{data_dir}.{sub_dir}.{name}")
+				if hasattr(module, "object_type") and module.object_type == "character":
+					character = Character(self, name=module.name)
+					if hasattr(module, "equipment") and module.equipment:
+						log.debug(str(module.equipment))
+						for e in module.equipment:
+							item = self.get_object(e["name"])
+							if item:
+								self.equip(character, item)
+							else:
+								log.error(f"Found invalid equipment {e.name} in {sub_dir} file {name}")
+					if hasattr(module, "is_player") and module.is_player:
+						self.李逍遥 = character
+				else:
+					log.error(f"Found invalid {sub_dir} file {name}")
+
+	def load_items(self):
+		data_dir = "data"
+		sub_dir = "item" # 
+		full_dir = os.path.join(data_dir, sub_dir)
+		log.debug(f"Loading {sub_dir}...")
+		for file in os.listdir(full_dir):
+			path = pathlib.Path(os.path.join(full_dir, file))
+			if path.is_file():
+				name = path.stem
+				module = importlib.import_module(f"{data_dir}.{sub_dir}.{name}")
+				if hasattr(module, "object_type"):
+					if module.object_type == "armor":
+						Armor(self, name=module.name, slot=module.slot)
+					elif module.object_type =="weapon":
+						Weapon(self, name=module.name)
+				else:
+					log.error(f"Found invalid {sub_dir} file {name}")
 
 	def start(self):
 		李逍遥: Character = self.李逍遥
