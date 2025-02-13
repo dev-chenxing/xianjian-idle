@@ -43,7 +43,7 @@ class Game:
                 character.装备["身穿"] = item
             elif item.slot == "脚":
                 character.装备["脚穿"] = item
-            elif item.slot == "腕":
+            elif item.slot == "佩戴":
                 character.装备["配带"] = item
         elif item.object_type == "weapon":
             character.装备["手持"] = item
@@ -111,6 +111,9 @@ class Game:
                         item = Ingredient(self, name=module.name)
                     if item:
                         item.unit = module.unit
+                        item.value = module.value
+                        if hasattr(module, "description"):
+                            item.description = module.description
                 else:
                     log.error(f"Found invalid {sub_dir} file {name}")
 
