@@ -8,6 +8,7 @@ from core.armor import Armor
 from core.character import Character
 import core.logging as log
 from core.object import Object
+from core.room import Room
 from core.say import say
 from core.weapon import Weapon
 
@@ -15,6 +16,7 @@ from core.weapon import Weapon
 class Game:
 	def __init__(self):
 		self.start_time = time.time()
+		self.rooms = {}
 		self.objects = {}
 
 	def equip(self, character: Character, item):
@@ -36,9 +38,14 @@ class Game:
 		if name in self.objects:
 			return self.objects[name]
 
+	def get_room(self, name: str) -> Room | None:
+		if name in self.rooms:
+			return self.rooms[name]
+
 	def load(self):
 		self.load_items()
 		self.load_characters()
+		self.load_rooms()
 
 	def load_characters(self):
 		data_dir = "data"
@@ -53,7 +60,6 @@ class Game:
 				if hasattr(module, "object_type") and module.object_type == "character":
 					character = Character(self, name=module.name)
 					if hasattr(module, "equipment") and module.equipment:
-						log.debug(str(module.equipment))
 						for e in module.equipment:
 							item = self.get_object(e["name"])
 							if item:
@@ -67,7 +73,7 @@ class Game:
 
 	def load_items(self):
 		data_dir = "data"
-		sub_dir = "item" # 
+		sub_dir = "item"
 		full_dir = os.path.join(data_dir, sub_dir)
 		log.debug(f"Loading {sub_dir}...")
 		for file in os.listdir(full_dir):
@@ -82,6 +88,32 @@ class Game:
 						Weapon(self, name=module.name)
 				else:
 					log.error(f"Found invalid {sub_dir} file {name}")
+
+	def load_rooms(self):
+		data_dir = "data"
+		sub_dir = "room"
+		full_dir = os.path.join(data_dir, sub_dir)
+		log.debug(f"Loading {sub_dir}...")
+		for file in os.listdir(full_dir):
+			path = pathlib.Path(os.path.join(full_dir, file))
+			if path.is_file():
+				name = path.stem
+				module = importlib.import_module(f"{data_dir}.{sub_dir}.{name}")
+				if hasattr(module, "name"):
+					if hasattr(module, "area"):
+						Room(self, area=module.area, name=module.name)
+					else:
+						Room(self, name=module.name)
+				else:
+					log.error(f"Found invalid {sub_dir} file {name}")
+
+	def position_room(self, character: Character, room_name: str):
+		room = self.get_room(name=room_name)
+		if room:
+			leaving_room = character.room
+			room.characters.append(character)
+			if character == self.李逍遥:
+				room.describe()
 
 	def start(self):
 		李逍遥: Character = self.李逍遥

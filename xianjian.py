@@ -52,6 +52,7 @@ def new_game():
 	game.load()
 	common.game = game
 	# game.start()
+	game.position_room(game.李逍遥, "余杭客栈·李逍遥房")
 	print("\n$green$欢迎您进入仙剑奇侠传，今后请使用 $brightyellow$帮助 $green$命令获得指令帮助。$normal$\n")
 	color_cat("./doc/help")
 	while True:

@@ -3,7 +3,7 @@ from core.object import Object
 from core.say import press_any_key_to_continue
 
 class Character(Object):
-	def __init__(self, game, name:str):
+	def __init__(self, game, name: str):
 		super().__init__(game, object_type="character", name=name)
 		self.经验值 = 0
 		self.修行 = 1
@@ -25,6 +25,7 @@ class Character(Object):
 			"配带": None
 		}
 		self.物品 = []
+		self.room = None
 
 	def say(self, text:str):
 		print(fg.cyan+self.name+"："+reset+text)
