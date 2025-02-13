@@ -1,0 +1,5 @@
+- [ ] create items
+- [ ] put items in 李逍遥房
+- [ ] class Room:
+  - [ ] def describe(self):
+- [ ] def position_room()

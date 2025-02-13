@@ -1,4 +1,4 @@
 object_type = "armor"
-name = "头巾"
+name = "皮帽"
 slot = "头"
-unit = "条"
+unit = "顶"
