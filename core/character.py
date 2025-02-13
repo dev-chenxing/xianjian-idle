@@ -24,6 +24,7 @@ class Character(Object):
 			"脚穿": None, 
 			"配带": None
 		}
+		self.物品 = []
 
 	def say(self, text:str):
 		print(fg.cyan+self.name+"："+reset+text)
