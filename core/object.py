@@ -5,6 +5,7 @@ class Object:
 
 		self.object_type = object_type
 		self.name = name
+		self.unit = "个"
 
 		game.objects[name] = self
 

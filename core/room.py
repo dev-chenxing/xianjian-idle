@@ -9,9 +9,13 @@ class Room:
 		self.name = name
 		self.full_name = f"{area}·{name}" if area else name
 		self.characters = []
+		self.items = []
 
 		game.rooms[self.full_name] = self
 
 	def describe(self):
 		print(f"\n$cyan$【{self.full_name}】")
+		if self.items:
+			for item_stack in self.items:
+				print()
 
