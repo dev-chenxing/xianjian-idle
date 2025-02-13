@@ -10,7 +10,6 @@ log.debug("Scanning command directory for cmd files...")
 for file in os.listdir(command_dir):
 	path = pathlib.Path(os.path.join(command_dir,file))
 	if path.is_file():
-		log.debug(file+" is file")
 		name = path.stem
 		cmd = importlib.import_module(command_dir+"."+name)
 		if cmd.name and cmd.callback:
@@ -21,7 +20,7 @@ def parse_cmds(param: str):
 	log.debug("Parsing command: "+param)
 	for pattern, cmd in cmd_patterns.items():
 		matches = re.match(pattern, param)
-		log.debug("Matching pattern "+pattern+" with command "+param)
+		# log.debug("Matching pattern "+pattern+" with command "+param)
 		if matches:
 			log.debug("Matched command pattern $green$"+pattern+"$normal$")
 			if len(matches.groups()) > 0:

@@ -1,31 +1,25 @@
 import time
 
-from core.ansi import color_cat, color_print as print
+from core import common
+from core.ansi import color_print as print
 from core.character import Character
-from core.cmds import parse_cmds
 from core.object import Object
 from core.say import say
-from core.utils import input_to
+
+
 
 
 class Game:
 	def __init__(self):
 		self.start_time = time.time()
 		self.objects = {}
-		self.load()
-		self.李逍遥 = self.get_object("李逍遥")
-		#self.start()
-		print("\n$green$欢迎您进入仙剑奇侠传，今后请使用 $brightyellow$帮助 $green$命令获得指令帮助。$normal$\n")
-		color_cat("./doc/help")
-		while True:
-			input_to(parse_cmds)
 
 	def get_object(self, name: str) -> Object | None:
 		if name in self.objects:
 			return self.objects[name]
 
 	def load(self):
-		Character(self, name="李逍遥")
+		self.李逍遥 = Character(self, name="李逍遥")
 		Character(self, name="李大娘")
 
 	def start(self):
@@ -54,8 +48,10 @@ class Game:
 		李大娘.say("你呀～游手好闲是出了名的，要不是这回我忙不过来，才不指望你这懒鬼来帮忙呢！")
 		李逍遥.say("一大早就有客人上门啦？")
 		李大娘.say("是啊．．还不快过来帮忙！")
+		say("李大娘离开了李逍遥房。")
 		李逍遥.say("真没意思．．一大清早就要人家做这个又做那个的．．")
 		李逍遥.say("嘿．．昨晚做好的密道正好派上用场，这次就从这里溜出去吧．．")
 		李大娘.say("逍遥！还窝在房里干啥？快出来帮忙招呼客人！")
 		李逍遥.say("喔！．．我马上就去！")
 		李逍遥.say("啧～算了，晚上再用密道吧，现在被发现就惨了！")
+

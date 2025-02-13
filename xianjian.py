@@ -1,6 +1,8 @@
 import os
 import sys
+from core import common
 from core.ansi import color_cat, color_print as print
+from core.cmds import parse_cmds
 from core.game import Game
 from core.utils import input_to
 
@@ -46,8 +48,14 @@ def new_game_or_load(param: str):
 
 
 def new_game():
-	Game()
-
+	game = Game()
+	game.load()
+	common.game = game
+	# game.start()
+	print("\n$green$欢迎您进入仙剑奇侠传，今后请使用 $brightyellow$帮助 $green$命令获得指令帮助。$normal$\n")
+	color_cat("./doc/help")
+	while True:
+		input_to(parse_cmds)
 
 def load(param: str):
 	load_save(saves_list[int(param)-1])
