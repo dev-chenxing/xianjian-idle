@@ -1,4 +1,5 @@
 from core.ansi import color_print as print
+from core.item_stack import ItemStack
 
 
 class Room:
@@ -10,7 +11,7 @@ class Room:
         self.name = name
         self.full_name = f"{area}·{name}" if area else name
         self.characters = []
-        self.items = []
+        self.items: list[ItemStack] = []
 
         game.rooms[self.full_name] = self
 
@@ -18,4 +19,4 @@ class Room:
         print(f"\n$cyan$【{self.full_name}】")
         if self.items:
             for item_stack in self.items:
-                print()
+                print(f"  {str(item_stack)}")

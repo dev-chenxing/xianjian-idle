@@ -1,3 +1,1 @@
-- [ ] class Room:
-  - [ ] def describe(self):
-- [ ] def position_room()
+- [ ] 物品

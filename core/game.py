@@ -7,6 +7,7 @@ from core.ansi import color_print as print
 from core.armor import Armor
 from core.character import Character
 from core.ingredient import Ingredient
+from core.item_stack import ItemStack
 import core.logging as log
 from core.object import Object
 from core.room import Room
@@ -20,6 +21,17 @@ class Game:
         self.start_time = time.time()
         self.rooms = {}
         self.objects = {}
+
+    def add_item(self, character: Character, item: Object):
+        added_item = False
+        for item_stack in character.物品:
+            if item_stack.object == item:
+                item_stack.count += 1
+                added_item = True
+                break
+        if not added_item:
+            character.物品.append(ItemStack(object=item))
+        print(f"得到{item.name}")
 
     def equip(self, character: Character, item):
         if item.object_type == "armor":
@@ -115,9 +127,17 @@ class Game:
                     f"{data_dir}.{sub_dir}.{name}")
                 if hasattr(module, "name"):
                     if hasattr(module, "area"):
-                        Room(self, area=module.area, name=module.name)
+                        room = Room(self, area=module.area, name=module.name)
                     else:
-                        Room(self, name=module.name)
+                        room = Room(self, name=module.name)
+                    if hasattr(module, "items") and module.items:
+                        for i in module.items:
+                            item = self.get_object(i["name"])
+                            if item:
+                                room.items.append(ItemStack(object=item))
+                            else:
+                                log.error(
+                                    f"Found invalid item {i.name} in {sub_dir} file {name}")
                 else:
                     log.error(f"Found invalid {sub_dir} file {name}")
 
@@ -126,8 +146,11 @@ class Game:
         if room:
             leaving_room = character.room
             room.characters.append(character)
+            character.room = room
             if character == self.李逍遥:
                 room.describe()
+            elif self.李逍遥.room == leaving_room:
+                print(f"{character.name}离开了{leaving_room.name}")
 
     def start(self):
         李逍遥: Character = self.李逍遥

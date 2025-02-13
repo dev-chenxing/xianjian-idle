@@ -1,7 +1,12 @@
-class ItemStack:
-	def __init__(self, object, count: int = 1):
-		self.object = object
-		self.count = count
+from digit2chinese import digit2chinese
 
-	def __str__(self):
-		return f"{self.count}{self.object.unit}{self.object.name}"
+from core.object import Object
+
+
+class ItemStack:
+    def __init__(self, object, count: int = 1):
+        self.object: Object = object
+        self.count = count
+
+    def __str__(self):
+        return f"{digit2chinese(self.count, style=1)}{self.object.unit}{self.object.name}"
