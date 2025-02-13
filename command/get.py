@@ -18,5 +18,5 @@ def callback(arg: str):
                     del item_stack
                 else:
                     item_stack.count -= 1
-                break
-        game.add_item(李逍遥, item)
+                game.add_item(李逍遥, item)
+                return
