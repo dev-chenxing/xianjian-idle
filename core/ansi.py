@@ -97,8 +97,47 @@ def color_filter(content: str):
 
 	return content
 
-
 def filter_color(content: str):
+	if not content:
+		return ""
+
+	# Foreground color
+	content = content.replace("$black$", "")
+	content = content.replace("$red$", "")
+	content = content.replace("$green$", "")
+	content = content.replace("$yellow$", "")
+	content = content.replace("$blue$", "")
+	content = content.replace("$magenta$", "")
+	content = content.replace("$cyan$", "")
+	content = content.replace("$white$", "")
+	content = content.replace("$brightblack$", "")
+	content = content.replace("$brightred$", "")
+	content = content.replace("$brightgreen$", "")
+	content = content.replace("$brightyellow$", "")
+	content = content.replace("$brightblue$", "")
+	content = content.replace("$brightmagenta$", "")
+	content = content.replace("$brightcyan$", "")
+	content = content.replace("$brightwhite$", "")
+	content = content.replace("$normal$", reset)
+
+	# Background color
+	content = content.replace("$bgred$", "")
+	content = content.replace("$bggreen$", "")
+	content = content.replace("$bgyellow$", "")
+	content = content.replace("$bgblue$", "")
+	content = content.replace("$bgmagenta$", "")
+	content = content.replace("$bgcyan$", "")
+	content = content.replace("$bgbrightred$", "")
+	content = content.replace("$bgbrightgreen$", "")
+	content = content.replace("$bgbrightyellow$", "")
+	content = content.replace("$bgbrightblue$", "")
+	content = content.replace("$bgbrightmagenta$", "")
+	content = content.replace("$bgbrightcyan$", "")
+
+	return content
+
+
+def filter_color_ansi(content: str):
 	if not content:
 		return ""
 
