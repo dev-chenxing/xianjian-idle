@@ -1,2 +1,2 @@
-- [ ] south
 - [ ] look
+- [ ] `Room.describe()` should list npcs
