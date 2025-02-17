@@ -2,6 +2,7 @@ import importlib
 import os
 import pathlib
 import time
+import pickle
 
 from core.ansi import color_print as print
 from core.armor import Armor
@@ -186,6 +187,10 @@ class Game:
 					del item_stack
 				else:
 					item_stack.count -= 1
+
+	def save_game(self, file:str="quicksave", name:str="Quicksave"):
+		with open(f"{file}.dat", 'wb') as save_file:
+			pickle.dump([name, self.李逍遥], save_file)
 
 	def start(self):
 		李逍遥: Character = self.李逍遥
