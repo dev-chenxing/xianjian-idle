@@ -1,7 +1,7 @@
 from core.game import Game
 
 
-pattern = "向([东南西北上下])走"
+pattern = "^[向往]?([东南西北上下])走?$"
 
 directions = ["东", "南", "西", "北", "上", "下"]
 

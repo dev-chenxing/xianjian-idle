@@ -18,6 +18,11 @@ class Room:
 
 	def describe(self):
 		print(f"\n$cyan$【{self.full_name}】")
+		if self.characters:
+			for character in self.characters:
+				from core.common import game
+				if character != game.李逍遥:
+					print(f"  {character.name}")
 		if self.items:
 			for item_stack in self.items:
 				print(f"  {str(item_stack)}")

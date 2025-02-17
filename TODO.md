@@ -1,2 +1,3 @@
-- [ ] look
-- [ ] `Room.describe()` should list npcs
+- [ ] 装备xx
+- [ ] 储存进度
+- [ ] 读取进度

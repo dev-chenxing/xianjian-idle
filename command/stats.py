@@ -3,7 +3,7 @@ from core.common import MAX_NUMBER
 import core.logging as log
 from core.utils import justify, string_width
 
-pattern = "状态"
+pattern = "^状态$"
 
 def callback():
 	from core.common import game

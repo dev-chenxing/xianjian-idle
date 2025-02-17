@@ -34,19 +34,21 @@ class Game:
 		print(f"得到{item.name}")
 
 	def equip(self, character: Character, item):
+		log.debug(f"$blue$equip$normal$({character.name}, {item.name})")
 		if item.object_type == "armor":
-			if item.slot == "头":
-				character.装备["头戴"] = item
-			elif item.slot == "披":
-				character.装备["披挂"] = item
-			elif item.slot == "身":
-				character.装备["身穿"] = item
-			elif item.slot == "脚":
-				character.装备["脚穿"] = item
-			elif item.slot == "佩戴":
-				character.装备["配带"] = item
+			equipment_slot = {"头": "头戴", "披": "披挂", "身": "身穿", "脚": "脚穿", "佩戴": "配带"}
+			if item.slot in equipment_slot.keys():
+				slot = equipment_slot[item.slot]
+				log.debug(f"{item.name} should be equipped on slot {slot}")
+				slot_equipment = character.装备[slot]
+				if slot_equipment:
+					log.debug(f"{character.name} currently has {slot_equipment} on slot {slot}")
+					self.add_item(character, slot_equipment)
+				character.装备[slot] = item
+				log.debug(f"{item.name} is equipped")
 		elif item.object_type == "weapon":
 			character.装备["手持"] = item
+			log.debug(f"{item.name} is equipped")
 
 	def get_object(self, name: str) -> Object | None:
 		if name in self.objects:

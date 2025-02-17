@@ -2,7 +2,7 @@ from core.ansi import color_print as print
 from core.game import Game
 from core.utils import ljust
 
-pattern = "物品"
+pattern = "^物品$"
 
 
 def callback():
