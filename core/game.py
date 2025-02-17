@@ -22,7 +22,7 @@ class Game:
 		self.rooms = {}
 		self.objects = {}
 
-	def add_item(self, character: Character, item: Object):
+	def add_item(self, character: Character, item: Object, message=True):
 		added_item = False
 		for item_stack in character.物品:
 			if item_stack.object == item:
@@ -31,24 +31,32 @@ class Game:
 				break
 		if not added_item:
 			character.物品.append(ItemStack(object=item))
-		print(f"得到{item.name}")
+		if message:
+			print(f"得到{item.name}")
 
-	def equip(self, character: Character, item):
+	def equip(self, character: Character, item, add_item=True):
 		log.debug(f"$blue$equip$normal$({character.name}, {item.name})")
 		if item.object_type == "armor":
 			equipment_slot = {"头": "头戴", "披": "披挂", "身": "身穿", "脚": "脚穿", "佩戴": "配带"}
 			if item.slot in equipment_slot.keys():
 				slot = equipment_slot[item.slot]
-				log.debug(f"{item.name} should be equipped on slot {slot}")
 				slot_equipment = character.装备[slot]
 				if slot_equipment:
-					log.debug(f"{character.name} currently has {slot_equipment} on slot {slot}")
-					self.add_item(character, slot_equipment)
+					print(f"{self.李逍遥.name}换下{slot_equipment.name}")
+					if add_item:
+						log.debug(f"将{slot_equipment.name}加入物品栏")
+						self.add_item(character, slot_equipment, message=False)
 				character.装备[slot] = item
 				log.debug(f"{item.name} is equipped")
 		elif item.object_type == "weapon":
 			character.装备["手持"] = item
 			log.debug(f"{item.name} is equipped")
+
+	def get_item_count(self, character: Character, item):
+		for item_stack in character.物品:
+			if item_stack.object == item:
+				return item_stack.count
+		return 0
 
 	def get_object(self, name: str) -> Object | None:
 		if name in self.objects:
@@ -80,7 +88,7 @@ class Game:
 						for e in module.equipment:
 							item = self.get_object(e["name"])
 							if item:
-								self.equip(character, item)
+								self.equip(character, item, add_item=True)
 							else:
 								log.error(
 									f"Found invalid equipment {e.name} in {sub_dir} file {name}")
@@ -169,6 +177,15 @@ class Game:
 				room.describe()
 			elif self.李逍遥.room == leaving_room:
 				print(f"{character.name}离开了{leaving_room.name}")
+
+	def remove_item(self, character: Character, item):
+		for item_stack in character.物品:
+			if item_stack.object == item:
+				if item_stack.count == 1:
+					character.物品.remove(item_stack)
+					del item_stack
+				else:
+					item_stack.count -= 1
 
 	def start(self):
 		李逍遥: Character = self.李逍遥

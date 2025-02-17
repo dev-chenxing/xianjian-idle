@@ -1,6 +1,6 @@
 from core.game import Game
 
-pattern = "^拿(.*)"
+pattern = "^拿起?(.*)"
 
 
 def callback(arg: str):
