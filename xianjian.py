@@ -37,8 +37,9 @@ def new_game_or_load(param: str):
 		new_game()
 	elif param == "旧":
 		if saves_list:
+			print("请选择要读取的进度文件：")
 			for i, save in enumerate(saves_list):
-				print((i+1)+") "+save)
+				print(f"({i+1}) {save}")
 			input_to(load)
 		else:
 			print("$red$没有找到旧的存档，请开始新的故事")
@@ -61,9 +62,13 @@ def new_game():
 def load(param: str):
 	load_save(saves_list[int(param)-1])
 
-
 def load_save(file: str):
-	print("\n$red$✖$normal$ has not been implemented")
+	game = Game()
+	game.load()
+	common.game = game
+	game.load_game(file="quicksave.dat")
+	while True:
+		input_to(parse_cmds)
 
 	# If this program was run (instead of imported), run the game:
 if __name__ == '__main__':

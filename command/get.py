@@ -19,3 +19,4 @@ def callback(arg: str):
 					item_stack.count -= 1
 				game.add_item(李逍遥, item)
 				return
+		print(f"{room.name}里没有{item.name}")

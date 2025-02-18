@@ -20,6 +20,7 @@ from core.weapon import Weapon
 class Game:
 	def __init__(self):
 		self.start_time = time.time()
+		self.李逍遥 : Character = None
 		self.rooms = {}
 		self.objects = {}
 
@@ -97,6 +98,13 @@ class Game:
 						self.李逍遥 = character
 				else:
 					log.error(f"Found invalid {sub_dir} file {name}")
+
+	def load_game(self, file: str):
+		with open(f"saves/{file}", 'rb') as save_file:
+			_, self.李逍遥, self.rooms, self.objects = pickle.load(save_file)
+			log.debug(f"game.李逍遥 = {str(self.李逍遥)}")
+			log.debug(f"game.rooms = {str(self.rooms)}")
+			self.李逍遥.room.describe()
 
 	def load_items(self):
 		data_dir = "data"
@@ -189,8 +197,9 @@ class Game:
 					item_stack.count -= 1
 
 	def save_game(self, file:str="quicksave", name:str="Quicksave"):
-		with open(f"{file}.dat", 'wb') as save_file:
-			pickle.dump([name, self.李逍遥], save_file)
+		with open(f"saves/{file}.dat", 'wb') as save_file:
+			pickle.dump([name, self.李逍遥, self.rooms, self.objects], save_file, protocol=2)
+			print("进度储存完毕")
 
 	def start(self):
 		李逍遥: Character = self.李逍遥
