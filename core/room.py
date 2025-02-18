@@ -1,5 +1,6 @@
 from core.ansi import color_print as print, underlined
 from core.item_stack import ItemStack
+import core.logging as log
 
 
 class Room:
@@ -20,6 +21,7 @@ class Room:
 		print(f"\n$cyan$【{self.full_name}】")
 		if self.exits:
 			exits: list[str] = [underlined(exit) for exit in self.exits]
+			log.debug(f"{self.name} 出口：{str(exits)}")
 			if len(exits) > 1:
 				last_exit = exits.pop(-1)
 				print(f"    这里明显的方向有{"、".join(exits)}和{last_exit}。")

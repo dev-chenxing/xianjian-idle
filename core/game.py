@@ -21,8 +21,8 @@ class Game:
 	def __init__(self):
 		self.start_time = time.time()
 		self.李逍遥 : Character = None
-		self.rooms = {}
-		self.objects = {}
+		self.rooms: dict[str, Room] = {}
+		self.objects: dict[str, Object] = {}
 
 	def add_item(self, character: Character, item: Object, message=True):
 		added_item = False
@@ -101,9 +101,13 @@ class Game:
 
 	def load_game(self, file: str):
 		with open(f"saves/{file}", 'rb') as save_file:
-			_, self.李逍遥, self.rooms, self.objects = pickle.load(save_file)
-			log.debug(f"game.李逍遥 = {str(self.李逍遥)}")
-			log.debug(f"game.rooms = {str(self.rooms)}")
+			_, self.李逍遥, rooms, self.objects = pickle.load(save_file)
+			for room_name, room in rooms.items():
+				print(f"loading save room {room_name}")
+				print(f"game file room exits: {str(self.rooms[room_name].exits)}")
+				print(f"save room exits: {str(room.exits)}")
+				self.rooms[room_name].characters = room.characters
+				self.rooms[room_name].items = room.items
 			self.李逍遥.room.describe()
 
 	def load_items(self):
@@ -140,7 +144,7 @@ class Game:
 		data_dir = "data"
 		sub_dir = "room"
 		full_dir = os.path.join(data_dir, sub_dir)
-		log.debug(f"Loading {sub_dir}...")
+		log.debug(f"Loading {sub_dir}s...")
 		for file in os.listdir(full_dir):
 			path = pathlib.Path(os.path.join(full_dir, file))
 			if path.is_file():
@@ -152,6 +156,7 @@ class Game:
 						room = Room(self, area=module.area, name=module.name)
 					else:
 						room = Room(self, name=module.name)
+					log.debug(f"Loading {module.name}")
 					if hasattr(module, "items") and module.items:
 						for i in module.items:
 							item = self.get_object(i["name"])
@@ -172,6 +177,8 @@ class Game:
 					if hasattr(module, "exits") and module.exits:
 						for direction, room_name in module.exits.items():
 							room.exits[direction] = room_name
+						log.debug(f"exits: {str(module.exits)}")
+
 				else:
 					log.error(f"Found invalid {sub_dir} file {name}")
 
