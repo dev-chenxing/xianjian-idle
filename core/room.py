@@ -1,4 +1,4 @@
-from core.ansi import color_print as print
+from core.ansi import color_print as print, underlined
 from core.item_stack import ItemStack
 
 
@@ -18,6 +18,15 @@ class Room:
 
 	def describe(self):
 		print(f"\n$cyan$【{self.full_name}】")
+		if self.exits:
+			exits: list[str] = [underlined(exit) for exit in self.exits]
+			if len(exits) > 1:
+				last_exit = exits.pop(-1)
+				print(f"    这里明显的方向有{"、".join(exits)}和{last_exit}。")
+			else:
+				print(f"    这里唯一的出口是{exits[0]}")
+		else:
+			print("    这里没有任何明显的出路。")
 		if self.characters:
 			for character in self.characters:
 				from core.common import game

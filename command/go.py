@@ -1,4 +1,5 @@
 from core.game import Game
+from core.ansi import color_print as print
 
 
 pattern = "^[向往]?([东南西北上下])走?$"
@@ -13,3 +14,5 @@ def callback(arg: str):
 	if direction in 李逍遥.room.exits:
 		# if 李逍遥.room.exit_blocked[direction]():
 			game.position_room(李逍遥, 李逍遥.room.exits[direction])
+	else:
+		print("这个方向没有出路。")

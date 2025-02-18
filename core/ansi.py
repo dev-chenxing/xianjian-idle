@@ -4,6 +4,9 @@ reset = '\033[0m'
 bold = '\033[01m'
 underline = '\033[04m'
 
+def underlined(text: str):
+	return underline + text + reset
+
 
 class fg:
 	black = '\033[30m'
@@ -95,6 +98,8 @@ def color_filter(content: str):
 	content = content.replace("$bgbrightmagenta$", bg.brightmagenta)
 	content = content.replace("$bgbrightcyan$", bg.brightcyan)
 
+	content = content.replace("$underline$", underline)
+
 	return content
 
 def filter_color(content: str):
@@ -133,6 +138,8 @@ def filter_color(content: str):
 	content = content.replace("$bgbrightblue$", "")
 	content = content.replace("$bgbrightmagenta$", "")
 	content = content.replace("$bgbrightcyan$", "")
+
+	content = content.replace("$underline$", "")
 
 	return content
 
@@ -173,6 +180,8 @@ def filter_color_ansi(content: str):
 	content = content.replace(bg.brightblue, "")
 	content = content.replace(bg.brightmagenta, "")
 	content = content.replace(bg.brightcyan, "")
+
+	content = content.replace(underline, "")
 
 	return content
 

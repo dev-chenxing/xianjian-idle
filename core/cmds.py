@@ -19,7 +19,6 @@ for file in os.listdir(command_dir):
 			log.error(f"Found invalid cmd file {name}")
 
 def parse_cmds(param: str):
-	log.debug("Parsing command: "+param)
 	for pattern, cmd in cmd_patterns.items():
 		matches = re.match(pattern, param)
 		# log.debug("Matching pattern "+pattern+" with command "+param)
