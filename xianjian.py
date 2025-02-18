@@ -4,6 +4,7 @@ from core import common
 from core.ansi import color_cat, color_print as print
 from core.cmds import parse_cmds
 from core.game import Game
+import core.logging as log
 from core.utils import input_to
 
 from pymitter import EventEmitter
@@ -14,68 +15,73 @@ saves_list = None
 
 
 def initialize():
-	color_cat("./doc/welcome")
-	get_saves_list()
-	main_menu()
+    color_cat("./doc/welcome")
+    get_saves_list()
+    main_menu()
 
 
 def get_saves_list():
-	if os.path.exists(path) and os.path.isdir(path):
-		global saves_list
-		saves_list = os.listdir(path)
+    if os.path.exists(path) and os.path.isdir(path):
+        global saves_list
+        saves_list = os.listdir(path)
 
 
 def main_menu():
-	print("请选择：")
-	print("$yellow$(新)$normal$的故事")
-	print("$yellow$(旧)$normal$的回忆")
-	input_to(new_game_or_load)
+    print("请选择：")
+    print("$yellow$(新)$normal$的故事")
+    print("$yellow$(旧)$normal$的回忆")
+    input_to(new_game_or_load)
 
 
 def new_game_or_load(param: str):
-	if param == "新":
-		new_game()
-	elif param == "旧":
-		if saves_list:
-			print("请选择要读取的进度文件：")
-			for i, save in enumerate(saves_list):
-				print(f"({i+1}) {save}")
-			input_to(load)
-		else:
-			print("$red$没有找到旧的存档，请开始新的故事")
-			main_menu()
-	else:
-		main_menu()
+    if param == "新":
+        new_game()
+    elif param == "旧":
+        if saves_list:
+            print("请选择要读取的进度文件：")
+            for i, save in enumerate(saves_list):
+                print(f"({i+1}) {save}")
+            input_to(load)
+        else:
+            print("$red$没有找到旧的存档，请开始新的故事")
+            main_menu()
+    else:
+        main_menu()
 
 
 def new_game():
-	game = Game()
-	game.load()
-	common.game = game
-	# game.start()
-	game.position_room(game.李逍遥, "余杭客栈·李逍遥房")
-	print("\n$green$欢迎您进入仙剑奇侠传，今后请使用 $brightyellow$帮助 $green$命令获得指令帮助。$normal$\n")
-	color_cat("./doc/help")
-	while True:
-		input_to(parse_cmds)
+    game = Game()
+    game.load()
+    common.game = game
+    # game.start()
+    game.position_room(game.李逍遥, "余杭客栈·李逍遥房")
+    print("\n$green$欢迎您进入仙剑奇侠传，今后请使用 $brightyellow$帮助 $green$命令获得指令帮助。$normal$\n")
+    color_cat("./doc/help")
+    while True:
+        input_to(parse_cmds)
+
 
 def load(param: str):
-	load_save(saves_list[int(param)-1])
+    load_save(saves_list[int(param)-1])
 
-def load_save(file: str):
-	game = Game()
-	game.load()
-	common.game = game
-	game.load_game(file="quicksave.dat")
-	while True:
-		input_to(parse_cmds)
 
-	# If this program was run (instead of imported), run the game:
+def load_save(file: str = "quicksave.dat"):
+    game = Game()
+    game.load()
+    log.debug("Finished loading game files")
+    common.game = game
+    game.load_game(file)
+    log.debug("Finished loading save files")
+    game.李逍遥.room.describe()
+    while True:
+        input_to(parse_cmds)
+
+    # If this program was run (instead of imported), run the game:
 if __name__ == '__main__':
-	try:
-		initialize()
-		event.emit("initialized")
-		print("全文完")
-	except KeyboardInterrupt:
-		print("\n$red$✖$normal$ 退出游戏")
-		sys.exit() # When Ctrl-C is pressed, end the program.
+    try:
+        initialize()
+        event.emit("initialized")
+        print("全文完")
+    except KeyboardInterrupt:
+        print("\n$red$✖$normal$ 退出游戏")
+        sys.exit()  # When Ctrl-C is pressed, end the program.
